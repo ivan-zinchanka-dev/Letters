@@ -1,15 +1,15 @@
 ﻿
 class Letter
 {
-    private bool objectiveMark;
-    private bool subjectiveMark;
-    private Stamps objectiveStamp;
-    private Stamps subjectiveStamp;
+    private bool _objectiveMark = default;
+    private bool _subjectiveMark = default;
+    private Stamps _objectiveStamp = default;
+    private Stamps _subjectiveStamp = default;
 
     public Letter(bool objectiveMark, Stamps objectiveStamp) {
 
-        this.objectiveMark = objectiveMark;
-        this.objectiveStamp = objectiveStamp;
+        _objectiveMark = objectiveMark;
+        _objectiveStamp = objectiveStamp;
     }
 
     public static Stamps StringToStamp(string city) {
@@ -49,20 +49,20 @@ class Letter
 
     public void InitSubjectiveData(bool subjectiveMark, Stamps subjectiveStamp) {
 
-        this.subjectiveMark = subjectiveMark;
-        this.subjectiveStamp = subjectiveStamp;
+        _subjectiveMark = subjectiveMark;
+        _subjectiveStamp = subjectiveStamp;
     }
 
     public override string ToString()
     {
-        return objectiveMark.ToString() + "  " + objectiveStamp; 
+        return _objectiveMark.ToString() + "  " + _objectiveStamp; 
     }
 
     public bool Check()
     {
-        if (objectiveMark == subjectiveMark)
+        if (_objectiveMark == _subjectiveMark)
         {
-            if (objectiveStamp == subjectiveStamp)
+            if (_objectiveStamp == _subjectiveStamp)
             {
                 return true;
             }
@@ -80,7 +80,7 @@ class Letter
 
     public bool GetSubjectiveMark() {
 
-        return subjectiveMark;
+        return _subjectiveMark;
     }
 
 }

@@ -2,66 +2,50 @@
 
 public class StampController : MonoBehaviour
 {
-    public bool isVisible = true;
-    [SerializeField] public short stamp_number = 0;
-    [SerializeField] private SceneController sceneController;
-    private Collider2D collider;
+    [SerializeField] private bool _isVisible = true;
+    [SerializeField] public short number = 0;
+    [SerializeField] private SceneController _sceneController = null;
+    
+    [SerializeField] private Collider2D _collider = null;
+    [SerializeField] private SpriteRenderer _spriteRend = null;
+
+    public bool IsVisible { 
+        
+        get {
+            
+            return _isVisible; 
+        } 
+        set {
+
+            _spriteRend.sortingLayerName = value ? "Objects" : "Background";
+            _isVisible = value; 
+        } 
+    }
 
     public void StopGame() {
   
-        collider.enabled = false;
+        _collider.enabled = false;
     }
 
     public void StartGame()
     {
-        collider.enabled = true;
-    }
-
-    public void SetVisible(bool mode) {
-
-        if (mode == true)
-        {
-            GetComponent<SpriteRenderer>().sortingLayerName = "Objects";
-            isVisible = true;
-        }
-        else {
-
-            GetComponent<SpriteRenderer>().sortingLayerName = "Background";
-            isVisible = false;
-        }
-
-    }
-
-    private void Start()
-    {
-        if (this.gameObject.GetComponent<BoxCollider2D>())
-        {
-            collider = GetComponent<BoxCollider2D>();
-        }
-        else if (this.gameObject.GetComponent<CircleCollider2D>())
-        {
-            collider = GetComponent<CircleCollider2D>();
-        }
-
+        _collider.enabled = true;
     }
 
     private void OnMouseUp()
     {
-        if (isVisible)
+        if (IsVisible)
         {
-            SetVisible(false);
-            sceneController.SetStamp((Stamps)stamp_number);
+            IsVisible = false;
+            _sceneController.SetStamp((Stamps)number);
         }
         else {
 
-            SetVisible(true);
-            sceneController.CloseStamps();
-
+            IsVisible = true;
+            _sceneController.CloseStamps();
         }       
     }
-
 }
-
 
 public enum Stamps {
 

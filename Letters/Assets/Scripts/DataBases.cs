@@ -6,18 +6,23 @@ using TMPro;
 
 public class DataBases : MonoBehaviour
 {
-    private static short lettersCount = 10;
-    private const short correctListSize = 103;
-    private const short incorrectListSize = 52;                         //53
+    private static short _lettersCount = 10;
+    private const short CorrectListSize = 103;
+    private const short IncorrectListSize = 52;                         //53
 
-    [SerializeField] private Font[] fonts = null;
+    [SerializeField] private Font[] _fonts = null;
 
-    private List<Letter> letters = new List<Letter>();
-    
-    private Address[] correctList = new Address[correctListSize];
-    private Address[] incorrectList = new Address[incorrectListSize];
+    private List<Letter> _letters = new List<Letter>();
 
-    public TextMeshProUGUI errorMsg;
+    private Address[] _correctList = new Address[CorrectListSize];
+    private Address[] _incorrectList = new Address[IncorrectListSize];
+
+    private const string CorrectLettersFileName = "CorrectLetters";
+    private const string IncorrectLettersFileName = "IncorrectLetters";
+
+    [SerializeField] private TextMeshProUGUI _errorMsg = null;
+
+    public static short LettersCount { get { return _lettersCount;} set { _lettersCount = value; } }
 
     public string AdaptIndex(int numbers)
     {  
@@ -36,24 +41,22 @@ public class DataBases : MonoBehaviour
 
         result += tmp[tmp.Length - 1];
         return result;
-
     }
-
 
     public string GetLeftRandomAddress() {
 
         short choiseAddress;                                                // выбор адреса отпраителя
-        char choiseList = (char)Random.Range(0, 2);                         // из какой БД выбираем (0 - некорректная, 1 - корректная)
+        byte choiseList = (byte)Random.Range(0, 2);                         // из какой БД выбираем (0 - некорректная, 1 - корректная)
 
         if (choiseList == 0)
         {
-            choiseAddress = (short)Random.Range(0, incorrectList.Length);   // выбор письма по индексу
-            return incorrectList[choiseAddress].ToLeftView();
+            choiseAddress = (short)Random.Range(0, _incorrectList.Length);   // выбор письма по индексу
+            return _incorrectList[choiseAddress].ToLeftView();
         }
         else
         {
-            choiseAddress = (short)Random.Range(0, correctList.Length);     // выбор письма по индексу
-            return correctList[choiseAddress].ToLeftView();
+            choiseAddress = (short)Random.Range(0, _correctList.Length);     // выбор письма по индексу
+            return _correctList[choiseAddress].ToLeftView();
         }
 
     }
@@ -62,122 +65,94 @@ public class DataBases : MonoBehaviour
     public string GetRightRandomAddress(ref int index) {
 
         short choiseAddress;                                                    // выбор адреса получателя
-        char choiseList = (char) Random.Range(0, 2);                            // из какой БД выбираем (0 - некорректная, 1 - корректная)
+        byte choiseList = (byte) Random.Range(0, 2);                            // из какой БД выбираем (0 - некорректная, 1 - корректная)
 
         if (choiseList == 0)
         {
-            choiseAddress = (short) Random.Range(0, incorrectList.Length);      // выбор письма по индексу
-            index = incorrectList[choiseAddress].GetIndex();
-            letters.Add(new Letter(false, Stamps.EMPTY));          
-            return incorrectList[choiseAddress].ToRightView();
+            choiseAddress = (short) Random.Range(0, _incorrectList.Length);      // выбор письма по индексу
+            index = _incorrectList[choiseAddress].GetIndex();
+            _letters.Add(new Letter(false, Stamps.EMPTY));          
+            return _incorrectList[choiseAddress].ToRightView();
         }
         else
         {
-            choiseAddress = (short)Random.Range(0, correctList.Length);          // выбор письма по индексу
-            index = correctList[choiseAddress].GetIndex();
-            letters.Add(new Letter(true, Letter.StringToStamp(correctList[choiseAddress].GetCity())));
-            return correctList[choiseAddress].ToRightView();
+            choiseAddress = (short)Random.Range(0, _correctList.Length);          // выбор письма по индексу
+            index = _correctList[choiseAddress].GetIndex();
+            _letters.Add(new Letter(true, Letter.StringToStamp(_correctList[choiseAddress].GetCity())));
+            return _correctList[choiseAddress].ToRightView();
         }   
     }
 
     public Font GetRandomFont()
     {       
-        if (fonts.Length == 0)
+        if (_fonts.Length == 0)
         {
             return Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;       
         }
         else
         {
-            short randomIndex = (short) Random.Range(0, fonts.Length);              // выбор шрифта для письма
-            return fonts[randomIndex];
+            short randomIndex = (short) Random.Range(0, _fonts.Length);              // выбор шрифта для письма
+            return _fonts[randomIndex];
         }
     }
 
     public void SetUserData(short letterNumber, bool userMark, Stamps userStamp) {
 
         Debug.Log("№ of letter: " + letterNumber + " Data: " + userMark + " " + userStamp);
-        letters[letterNumber - 1].InitSubjectiveData(userMark, userStamp);
+        _letters[letterNumber - 1].InitSubjectiveData(userMark, userStamp);
     }
 
-    public static short GetLettersCount()
-    {
-        return lettersCount;
-    }
+    //public static short GetLettersCount()
+    //{
+    //    return _lettersCount;
+    //}
 
-    public static void SetLettersCount(short count)
-    {
-        lettersCount = count;
-    }
+    //public static void SetLettersCount(short count)
+    //{
+    //    _lettersCount = count;
+    //}
 
     private void Start()
-    {             
+    {
         try
         {
             short i = 0;
-            StreamReader sr = new StreamReader("Assets\\GameData\\Resources\\CorrectLetters.txt", Encoding.Default);
+            TextAsset textAsset = Resources.Load(CorrectLettersFileName) as TextAsset;
+            StringReader reader = new StringReader(textAsset.text);
 
-            while (!sr.EndOfStream && i < correctList.Length)
-            {
-                try
-                {
-                    correctList[i] = new Address(sr.ReadLine(), sr.ReadLine(), short.Parse(sr.ReadLine()), sr.ReadLine(), int.Parse(sr.ReadLine()), sr.ReadLine());
-                    i++;
-                }
-                catch (System.Exception ex)
-                {
-                    SceneController.error = true;
-                    errorMsg.text = "Файл \"CorrectLetters.txt\" повреждён!";
-                    Debug.Log("Файл \"CorrectLetters.txt\" повреждён!");
-                    break;
-                }
+            while (i < _correctList.Length) {
+
+                _correctList[i] = new Address(reader.ReadLine(), reader.ReadLine(), 
+                    short.Parse(reader.ReadLine()), reader.ReadLine(), int.Parse(reader.ReadLine()), reader.ReadLine());
+                i++;
             }
-
-            sr.Close();
 
             i = 0;
-            sr = new StreamReader("Assets\\GameData\\Resources\\IncorrectLetters.txt", Encoding.Default);
+            textAsset = Resources.Load(IncorrectLettersFileName) as TextAsset;
+            reader = new StringReader(textAsset.text);
 
-            while (!sr.EndOfStream && i < incorrectList.Length)
+            while (i < _incorrectList.Length)
             {
-                try
-                {
-                    incorrectList[i] = new Address(sr.ReadLine(), sr.ReadLine(), short.Parse(sr.ReadLine()), sr.ReadLine(), int.Parse(sr.ReadLine()), sr.ReadLine());
-                    i++;
-                }
-                catch (System.Exception ex)
-                {
-                    SceneController.error = true;
-                    errorMsg.text = "Файл \"IncorrectLetters.txt\" повреждён!";
-                    Debug.Log("Файл \"IncorrectLetters.txt\" повреждён!");
-                    break;
-                }
+                _incorrectList[i] = new Address(reader.ReadLine(), reader.ReadLine(), short.Parse(reader.ReadLine()),
+                    reader.ReadLine(), int.Parse(reader.ReadLine()), reader.ReadLine());
+                i++;
             }
-
-            //for (i = 0; i < incorrectList.Length; i++)
-            //{
-            //    cnt++;
-            //    Debug.Log(incorrectList[i].ToString());
-            //}
-
-            sr.Close();
-
         }
-        catch (FileNotFoundException ex) 
+        catch (System.Exception ex) 
         {
-            SceneController.error = true;
-            errorMsg.text = "Ошибка! Файл " + ex.FileName + " не найден.";
-            Debug.Log("Ошибка! Файл " + ex.FileName + " не найден.");
-        }
-        
+            SceneController.Error = true;
+            _errorMsg.text = ex.Message;
+            Debug.Log(_errorMsg.text);
+        } 
     }
 
     public void Summarizing() {
 
-        Stats.received = lettersCount;
+        Stats.received = _lettersCount;
 
-        for (short i = 0; i < letters.Count; i++)
+        for (short i = 0; i < _letters.Count; i++)
         {
-            if (letters[i].Check())
+            if (_letters[i].Check())
             {
                 Stats.correctlyProcessed++;               
             }
@@ -186,7 +161,7 @@ public class DataBases : MonoBehaviour
                 Stats.incorrectlyProcessed++;
             }
 
-            if (letters[i].GetSubjectiveMark())
+            if (_letters[i].GetSubjectiveMark())
             {
                 Stats.sent++;
             }
@@ -195,14 +170,14 @@ public class DataBases : MonoBehaviour
                 Stats.rejected++;
             }
 
-            Debug.Log(i + ". " + letters[i] + "  RES: " + letters[i].Check());
+            Debug.Log(i + ". " + _letters[i] + "  RES: " + _letters[i].Check());
         }
        
     }
 
     public void RemoveLastLetter()
     {
-        letters.RemoveAt(letters.Count - 1);
+        _letters.RemoveAt(_letters.Count - 1);
     }
 
 }

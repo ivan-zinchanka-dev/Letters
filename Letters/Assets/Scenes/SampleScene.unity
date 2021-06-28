@@ -231,25 +231,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db5c847c4681d5146aacadb17eb1649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resumeButton: {fileID: 807022106}
-  exitButton: {fileID: 1661486538}
-  errorImage: {fileID: 1428988442}
-  restartButton: {fileID: 1318913705}
-  gameEndButton: {fileID: 1991645084}
-  buttonsSpeed: 1000
-  imageSpeed: 3000
-  paper: {fileID: 1254006460}
-  currentStamp: 6
-  stamps:
+  _resumeButton: {fileID: 807022106}
+  _exitButton: {fileID: 1661486538}
+  _errorImage: {fileID: 1428988442}
+  _restartButton: {fileID: 1318913705}
+  _gameEndButton: {fileID: 1991645084}
+  _buttonsSpeed: 1000
+  _imageSpeed: 2000
+  _paper: {fileID: 1254006460}
+  _stamps:
   - {fileID: 440016541}
   - {fileID: 85137552}
   - {fileID: 472149255}
   - {fileID: 454011132}
   - {fileID: 684964627}
   - {fileID: 519526131}
-  letter: {fileID: 1253080179}
-  output: {fileID: 133619727}
-  leftTime: 10
+  _letter: {fileID: 1253080179}
+  _timeOutput: {fileID: 133619727}
+  _leftTime: 10
+  _dataBase: {fileID: 45449731}
 --- !u!4 &45449728
 Transform:
   m_ObjectHideFlags: 0
@@ -319,9 +319,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8ec32b1d834f604e8c15095c51d8ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fonts:
+  _fonts:
   - {fileID: 12800000, guid: 3ace475e854716942b0f05f13f7c5965, type: 3}
-  errorMsg: {fileID: 1031588269}
+  _errorMsg: {fileID: 1031588269}
 --- !u!1 &85137548
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,9 +443,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d04485fbd4724ff4499eb93ef82cc7ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isVisible: 1
-  stamp_number: 1
-  sceneController: {fileID: 45449727}
+  _isVisible: 1
+  number: 1
+  _sceneController: {fileID: 45449727}
+  _collider: {fileID: 85137551}
+  _spriteRend: {fileID: 85137549}
 --- !u!1 &133619725
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,7 +479,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217d41a9ff45b1843921b695d6f61a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order: 2
+  _order: 2
+  _text: {fileID: 133619727}
 --- !u!102 &133619727
 TextMesh:
   serializedVersion: 3
@@ -679,7 +682,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217d41a9ff45b1843921b695d6f61a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order: 2
+  _order: 2
+  _text: {fileID: 402598845}
 --- !u!102 &402598845
 TextMesh:
   serializedVersion: 3
@@ -952,7 +956,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217d41a9ff45b1843921b695d6f61a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order: 5
+  _order: 5
+  _text: {fileID: 421671398}
 --- !u!23 &421671400
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1127,9 +1132,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d04485fbd4724ff4499eb93ef82cc7ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isVisible: 1
-  stamp_number: 0
-  sceneController: {fileID: 45449727}
+  _isVisible: 1
+  number: 0
+  _sceneController: {fileID: 45449727}
+  _collider: {fileID: 440016540}
+  _spriteRend: {fileID: 440016538}
 --- !u!1 &454011128
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,9 +1248,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d04485fbd4724ff4499eb93ef82cc7ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isVisible: 1
-  stamp_number: 3
-  sceneController: {fileID: 45449727}
+  _isVisible: 1
+  number: 3
+  _sceneController: {fileID: 45449727}
+  _collider: {fileID: 454011131}
+  _spriteRend: {fileID: 454011129}
 --- !u!1 &472149251
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,9 +1374,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d04485fbd4724ff4499eb93ef82cc7ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isVisible: 1
-  stamp_number: 2
-  sceneController: {fileID: 45449727}
+  _isVisible: 1
+  number: 2
+  _sceneController: {fileID: 45449727}
+  _collider: {fileID: 472149254}
+  _spriteRend: {fileID: 472149252}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1573,9 +1584,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d04485fbd4724ff4499eb93ef82cc7ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isVisible: 1
-  stamp_number: 5
-  sceneController: {fileID: 45449727}
+  _isVisible: 1
+  number: 5
+  _sceneController: {fileID: 45449727}
+  _collider: {fileID: 519526130}
+  _spriteRend: {fileID: 519526128}
 --- !u!1 &652115706
 GameObject:
   m_ObjectHideFlags: 0
@@ -1621,7 +1634,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217d41a9ff45b1843921b695d6f61a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order: 2
+  _order: 2
+  _text: {fileID: 652115709}
 --- !u!102 &652115709
 TextMesh:
   serializedVersion: 3
@@ -1796,9 +1810,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d04485fbd4724ff4499eb93ef82cc7ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isVisible: 1
-  stamp_number: 4
-  sceneController: {fileID: 45449727}
+  _isVisible: 1
+  number: 4
+  _sceneController: {fileID: 45449727}
+  _collider: {fileID: 684964626}
+  _spriteRend: {fileID: 684964624}
 --- !u!1 &807022105
 GameObject:
   m_ObjectHideFlags: 0
@@ -2089,6 +2105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ad1d9dcfdda434da85018f5ad84e1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioSource: {fileID: 808250743}
 --- !u!1 &833702740
 GameObject:
   m_ObjectHideFlags: 0
@@ -2443,7 +2460,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217d41a9ff45b1843921b695d6f61a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order: 5
+  _order: 5
+  _text: {fileID: 975286690}
 --- !u!102 &975286690
 TextMesh:
   serializedVersion: 3
@@ -2707,7 +2725,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217d41a9ff45b1843921b695d6f61a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order: 2
+  _order: 2
+  _text: {fileID: 1079657060}
 --- !u!102 &1079657060
 TextMesh:
   serializedVersion: 3
@@ -2830,7 +2849,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217d41a9ff45b1843921b695d6f61a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order: 5
+  _order: 5
+  _text: {fileID: 1187413280}
 --- !u!23 &1187413282
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3009,14 +3029,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6390f166548b45d4089ba4f0fd173380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  label: {fileID: 1632359113}
-  sceneController: {fileID: 45449727}
-  RightText: {fileID: 402598845}
-  RightTextIndex: {fileID: 1079657060}
-  LeftText: {fileID: 652115709}
-  WasteBasket: {fileID: 354877539}
-  Bag: {fileID: 1922556215}
-  speed: 25
+  _label: {fileID: 1632359113}
+  _rightText: {fileID: 402598845}
+  _rightTextIndex: {fileID: 1079657060}
+  _leftText: {fileID: 652115709}
+  _sceneController: {fileID: 45449727}
+  _wasteBasket: {fileID: 354877539}
+  _bag: {fileID: 1922556215}
+  _speed: 25
+  _letter: {fileID: 1253080177}
+  _collider: {fileID: 1253080178}
 --- !u!1 &1254006459
 GameObject:
   m_ObjectHideFlags: 0
@@ -3029,7 +3051,7 @@ GameObject:
   - component: {fileID: 1254006461}
   - component: {fileID: 1254006460}
   m_Layer: 0
-  m_Name: ResultsPapper
+  m_Name: ResultPaper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3047,9 +3069,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518ee69efb83dee4094b325301fbd22f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 1187413280}
-  generalMark: {fileID: 421671398}
-  speed: 10
+  _stats: {fileID: 1187413280}
+  _generalMark: {fileID: 421671398}
+  _speed: 10
+  _paper: {fileID: 1254006462}
 --- !u!212 &1254006461
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3388,8 +3411,8 @@ Canvas:
   m_GameObject: {fileID: 1397457082}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -3397,7 +3420,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
+  m_SortingLayerID: -2030981665
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1397457086
@@ -3738,13 +3761,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a26c8f97b923b504ea6a61c45a6dab71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprites:
+  _sprites:
   - {fileID: 21300000, guid: fcead44a63267554c8c528876c436e92, type: 3}
   - {fileID: 21300000, guid: 9b3423c7259b08f45bea22b0bf7b7040, type: 3}
   - {fileID: 21300000, guid: a641a6f8a73c6a142912615e782ca009, type: 3}
   - {fileID: 21300000, guid: 505e4903d6eb89f42a933a08456a6fb2, type: 3}
   - {fileID: 21300000, guid: 3a4eb241ad1934344b9c362094711647, type: 3}
   - {fileID: 21300000, guid: 0acc66e465cf9cc4a93ec94f21612033, type: 3}
+  _render: {fileID: 1632359112}
 --- !u!1 &1661486537
 GameObject:
   m_ObjectHideFlags: 0
@@ -3920,7 +3944,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 217d41a9ff45b1843921b695d6f61a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order: 5
+  _order: 5
+  _text: {fileID: 1831337991}
 --- !u!102 &1831337991
 TextMesh:
   serializedVersion: 3

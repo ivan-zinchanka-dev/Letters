@@ -18,8 +18,6 @@ public struct Stats
 
         float percent = correctlyProcessed / (float)received * 100;                 // оценка в процентах
 
-        Debug.Log("P: " + percent);
-
         if (percent <= 25)
         {
             return new Color(1.0f, 0.0f, 0.0f);

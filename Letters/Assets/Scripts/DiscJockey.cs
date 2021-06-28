@@ -1,30 +1,36 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class DiscJockey : MonoBehaviour
-{
+{ 
+    [SerializeField] private AudioSource _audioSource = null;
 
-    //[SerializeField] private float StartVolume = 0.5f;
-    public static float Volume { get; private set; } = 0.5f;
-    private AudioSource audioSource = null;
+    public float Volume { 
+        get {          
+            return _audioSource.volume;  
+        } 
+        private set {
+            
+            _audioSource.volume = value; 
+        } 
+    }
 
     public void SetSoundsVolume(Slider s)
     {
         Volume = s.value;
     }
 
-
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        audioSource.volume = Volume;
-        audioSource.Play();
+        if (_audioSource == null) _audioSource = GetComponent<AudioSource>();        
+        _audioSource.volume = Volume;
+        _audioSource.Play();
     }
 
     private void Update()
     {
-        audioSource.volume = Volume;
+        _audioSource.volume = Volume;
     }
-
 
 }

@@ -3,28 +3,29 @@ using UnityEngine.UI;
 
 public class StartSceneManager : MonoBehaviour
 {
-    [SerializeField] private RectTransform startButton;
-    [SerializeField] private RectTransform settingsButton;
-    [SerializeField] private RectTransform settingsImage;
-    [SerializeField] private Slider difficultySlider;
-    [SerializeField] private Slider volumeSlider;
-    [SerializeField] private float buttonsSpeed = 1000.0f;          // скорость движения кнопок
-    [SerializeField] private float forwardImageSpeed = 3000.0f;     // скорость движения окна настроек к центру экрана
-    [SerializeField] private float backImageSpeed = 4000.0f;        // скорость движения окна настроек от центра экрана (вправо)
+    [SerializeField] private RectTransform _startButton = null;
+    [SerializeField] private RectTransform _settingsButton = null;
+    [SerializeField] private RectTransform _settingsImage = null;
+    [SerializeField] private Slider _difficultySlider = null;
+    [SerializeField] private Slider _volumeSlider = null;
+    [SerializeField] private float _buttonsSpeed = 1000.0f;          // скорость движения кнопок
+    [SerializeField] private float _forwardImageSpeed = 3000.0f;     // скорость движения окна настроек к центру экрана
+    [SerializeField] private float _backImageSpeed = 4000.0f;        // скорость движения окна настроек от центра экрана (вправо)
+    [SerializeField] private DiscJockey _discJockey = null;
 
     private bool isStartMenu = true;
-    public static bool isUpdated = true;
+    public static bool IsUpdated { get; set; } = true;
 
-    private const float startButton_y_max = 660.0f;                 //  максимальные и минимальные координаты кнопок Играть и Настройки
-    private const float startButton_y_min = 40.0f;
-    private const float settingsButton_y_max = -180.0f;
-    private const float settingsButton_y_min = -800.0f;
-    private const float settingsImage_x_max = 1500.0f;             // максимальная и минимальная координаты окна настроек
-    private const float settingsImage_x_min = 0.0f;
+    private const float StartButtonYMax = 660.0f;                 //  максимальные и минимальные координаты кнопок Играть и Настройки
+    private const float StartButtonYMin = 40.0f;
+    private const float SettingsButtonYMax = -180.0f;
+    private const float SettingsButtonYMin = -800.0f;
+    private const float SettingsImageXMax = 1500.0f;             // максимальная и минимальная координаты окна настроек
+    private const float SettingsImageXMin = 0.0f;
 
     public void StartGame()
     {
-        Application.LoadLevel("SampleScene");
+        Application.LoadLevel(1);
     }
 
     public void ChangeDifficultyLevel(Slider s) {
@@ -35,13 +36,13 @@ public class StartSceneManager : MonoBehaviour
 
     private void SetDifficultyLevel()
     {
-        difficultySlider.value = (float) SceneController.GetDifficultyLevel();
+        _difficultySlider.value = (float) SceneController.GetDifficultyLevel();
         Debug.Log("SET LVL: " + SceneController.GetDifficultyLevel());
     }
 
     private void SetVolume() {
 
-        volumeSlider.value = DiscJockey.Volume; 
+        _volumeSlider.value = _discJockey.Volume; 
     } 
 
 
@@ -54,22 +55,22 @@ public class StartSceneManager : MonoBehaviour
     {
         if (isStartMenu)
         { 
-            startButton.anchoredPosition = Vector2.MoveTowards(startButton.anchoredPosition, new Vector2(0.0f, startButton_y_min), buttonsSpeed * Time.deltaTime);
-            settingsButton.anchoredPosition = Vector2.MoveTowards(settingsButton.anchoredPosition, new Vector2(0.0f, settingsButton_y_max), buttonsSpeed * Time.deltaTime);
-            settingsImage.anchoredPosition = Vector2.MoveTowards(settingsImage.anchoredPosition, new Vector2(settingsImage_x_max, 0.0f), backImageSpeed * Time.deltaTime);
+            _startButton.anchoredPosition = Vector2.MoveTowards(_startButton.anchoredPosition, new Vector2(0.0f, StartButtonYMin), _buttonsSpeed * Time.deltaTime);
+            _settingsButton.anchoredPosition = Vector2.MoveTowards(_settingsButton.anchoredPosition, new Vector2(0.0f, SettingsButtonYMax), _buttonsSpeed * Time.deltaTime);
+            _settingsImage.anchoredPosition = Vector2.MoveTowards(_settingsImage.anchoredPosition, new Vector2(SettingsImageXMax, 0.0f), _backImageSpeed * Time.deltaTime);
         }
         else {
 
-            if (!isUpdated)
+            if (!IsUpdated)
             {
                 SetDifficultyLevel();
                 SetVolume();
-                isUpdated = true;
+                IsUpdated = true;
             }
             
-            startButton.anchoredPosition = Vector2.MoveTowards(startButton.anchoredPosition, new Vector2(0.0f, startButton_y_max), buttonsSpeed * Time.deltaTime);
-            settingsButton.anchoredPosition = Vector2.MoveTowards(settingsButton.anchoredPosition, new Vector2(0.0f, settingsButton_y_min), buttonsSpeed * Time.deltaTime);
-            settingsImage.anchoredPosition = Vector2.MoveTowards(settingsImage.anchoredPosition, new Vector2(settingsImage_x_min, 0.0f), forwardImageSpeed * Time.deltaTime);
+            _startButton.anchoredPosition = Vector2.MoveTowards(_startButton.anchoredPosition, new Vector2(0.0f, StartButtonYMax), _buttonsSpeed * Time.deltaTime);
+            _settingsButton.anchoredPosition = Vector2.MoveTowards(_settingsButton.anchoredPosition, new Vector2(0.0f, SettingsButtonYMin), _buttonsSpeed * Time.deltaTime);
+            _settingsImage.anchoredPosition = Vector2.MoveTowards(_settingsImage.anchoredPosition, new Vector2(SettingsImageXMin, 0.0f), _forwardImageSpeed * Time.deltaTime);
         }
         
     }

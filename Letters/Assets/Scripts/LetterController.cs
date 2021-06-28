@@ -1,210 +1,209 @@
 ﻿using UnityEngine;
 
 public class LetterController : MonoBehaviour
-{
-    private Transform letter;
-    private BoxCollider2D collider;
-    [SerializeField] private Label label;
-    [SerializeField] private SceneController sceneController;
-    [SerializeField] private TextMesh RightText;
-    [SerializeField] private TextMesh RightTextIndex;
-    [SerializeField] private TextMesh LeftText;
+{ 
+    [SerializeField] private Label _label = null; 
+    [SerializeField] private TextMesh _rightText = null;
+    [SerializeField] private TextMesh _rightTextIndex = null;
+    [SerializeField] private TextMesh _leftText = null;
 
-    [SerializeField] private SpriteRenderer WasteBasket;
-    [SerializeField] private SpriteRenderer Bag;
+    [SerializeField] private SceneController _sceneController = null;
+    [SerializeField] private SpriteRenderer _wasteBasket = null;
+    [SerializeField] private SpriteRenderer _bag = null;
+    [SerializeField] private float _speed = 25.0f;                                      // скорость перемещения письма
 
-    private DataBases db;    
-    Vector3 fingerPos, startPos, deskPos;
-    float dx = 0.0f, dy = 0.0f;
-    bool isTrash = false, isExamined = false, isRestart = false, isReceived = false, isWrited = false;
-
-    bool NoLetters = false;
-
-    [SerializeField] private float speed = 25.0f;                                   // скорость перемещения письма
-    const float upper_bound = 1.0f, lower_bound = -2.5f;                            // границы поля, в рамках которого можно перемещать письмо
-    const float left_bound = -5.0f, right_bound = 5.0f;
-    const float trash_can = -14.0f, back_pack = 14.0f;                              // не трогать
-    const float left_x = -3.0f, right_x = 3.0f, upper_y = 0.0f, lower_y = -3.0f;    // границы поля, в котором можно ставить печать
-    const float max_angle = 5.5f;                                                   // максимальный угол поворота письма
-
-    const float coef = 0.25f;
-    const float max_alpha = 1f;
-
-    short generalLettersCount; 
-    short processedLettersCount;
+    [SerializeField] private Transform _letter = null;
+    [SerializeField] private BoxCollider2D _collider = null;
+    
+    private DataBases _dataBase = null;    
+    private Vector3 _fingerPos = default, _startPos = default, _deskPos = default;
+    private float _dx = 0.0f, _dy = 0.0f;
+    private bool _isTrash = false, _isExamined = false, _isResumed = false, _isReceived = false, _isWrited = false;
+    private bool _noLetters = false;
+                                     
+    private const float UpperBound = 1.0f, LowerBound = -2.5f;                            // границы поля, в рамках которого можно перемещать письмо
+    private const float LeftBound = -5.0f, RightBound = 5.0f;
+    private const float TrashCan = -14.0f, BackPack = 14.0f;                              // не трогать
+    private const float LeftX = -3.0f, RightX = 3.0f, UpperY = 0.0f, LowerY = -3.0f;    // границы поля, в котором можно ставить печать
+    private const float MaxAngle = 5.5f;                                                   // максимальный угол поворота письма
+         
+    private short _generalLettersCount = default; 
+    private short _processedLettersCount = default;
 
     public void StopGame() {
       
-        collider.enabled = false;
+        _collider.enabled = false;
     }
 
     public void StartGame() {
 
-        collider.enabled = true;
+        _collider.enabled = true;
     }
 
-    private void UpdateColors() {                                               
-                                                                                   // обновление цветов мусорной урны(красный) и портфеля(зелёный) в зависимости от позиции письма 
-        var tmpColor = WasteBasket.color;
-        tmpColor.a = Mathf.Clamp(-1 * coef * letter.position.x, 0, max_alpha);
-        WasteBasket.color = tmpColor;
+    private void UpdateColors() {
 
-        tmpColor = Bag.color;
-        tmpColor.a = Mathf.Clamp(coef * letter.position.x, 0, max_alpha);
-        Bag.color = tmpColor;
+        // обновление цветов мусорной урны(красный) и портфеля(зелёный) в зависимости от позиции письма 
+
+        const float ColorFactor = 0.25f;
+        const float MaxAlpha = 1f;
+        
+        var tmpColor = _wasteBasket.color;
+        tmpColor.a = Mathf.Clamp(-1 * ColorFactor * _letter.position.x, 0, MaxAlpha);
+        _wasteBasket.color = tmpColor;
+
+        tmpColor = _bag.color;
+        tmpColor.a = Mathf.Clamp(ColorFactor * _letter.position.x, 0, MaxAlpha);
+        _bag.color = tmpColor;
     }
 
     private void Start() {
   
-        letter = GetComponent<Transform>();
-        collider = GetComponent<BoxCollider2D>();
-        db = sceneController.GetComponent<DataBases>();
-        deskPos = new Vector2(0.0f, -1.45f);
-        startPos = letter.position;
+        _sceneController.TryGetComponent<DataBases>(out _dataBase);
+        _deskPos = new Vector2(0.0f, -1.45f);
+        _startPos = _letter.position;
 
-        generalLettersCount = DataBases.GetLettersCount();
-        processedLettersCount = 0;
-
+        _generalLettersCount = DataBases.LettersCount;
+        _processedLettersCount = 0;
     }
 
     private void OnMouseDown(){
 
-        if (sceneController.endOfGame) {
+        if (_sceneController.EndOfGame) {
 
             return;       
         }
 
-        isRestart = false;
-        fingerPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        dx = letter.position.x - fingerPos.x;
-        dy = letter.position.y - fingerPos.y;
+        _isResumed = false;
+        _fingerPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        _dx = _letter.position.x - _fingerPos.x;
+        _dy = _letter.position.y - _fingerPos.y;
 
-        if (fingerPos.x > left_x && fingerPos.x < right_x && fingerPos.y > lower_y && fingerPos.y < upper_y)
+        if (_fingerPos.x > LeftX && _fingerPos.x < RightX && _fingerPos.y > LowerY && _fingerPos.y < UpperY)
         {
-            label.DrawLabel(sceneController.currentStamp, fingerPos);
+            _label.DrawLabel(_sceneController.CurrentStamp, _fingerPos);
         }     
     }
 
     private void OnMouseUp(){
 
-        if (!isTrash && !isExamined) {
+        if (!_isTrash && !_isExamined) {
 
-            isRestart = true;  
+            _isResumed = true;  
         }   
     }
 
     private void OnMouseDrag(){
 
-        if (!isReceived || sceneController.endOfGame) {
+        if (!_isReceived || _sceneController.EndOfGame) {
 
             return;
         }
 
         float tmp_y;
-        fingerPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        _fingerPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (letter.position.x > right_bound)
+        if (_letter.position.x > RightBound)
         {
-            isExamined = true;
+            _isExamined = true;
         }
-        else if (letter.position.x < left_bound)
+        else if (_letter.position.x < LeftBound)
         {
-            isTrash = true;
+            _isTrash = true;
         }
         else {
 
-            tmp_y = fingerPos.y + dy;
+            tmp_y = _fingerPos.y + _dy;
 
-            if (tmp_y > upper_bound || tmp_y < lower_bound) {
+            if (tmp_y > UpperBound || tmp_y < LowerBound) {
 
                 return;
             }
             else {
 
-                letter.position = new Vector2(fingerPos.x + dx, tmp_y);
+                _letter.position = new Vector2(_fingerPos.x + _dx, tmp_y);
             } 
         }        
     }
 
     private void Update(){
 
-        if (SceneController.error)
+        if (SceneController.Error)
         {
             return;
         }
 
         UpdateColors();
 
-        if ((processedLettersCount == generalLettersCount))
+        if ((_processedLettersCount == _generalLettersCount))
         {
-            if (!NoLetters)
+            if (!_noLetters)
             {
-                db.Summarizing();                             // все письма обработаны
-                sceneController.GameEnd();
-                NoLetters = true;
+                _dataBase.Summarizing();                             // все письма обработаны
+                _sceneController.GameEnd();
+                _noLetters = true;
             }
 
             return;
         }
 
-        if (letter.position.x <= trash_can || letter.position.x >= back_pack) {         
+        if (_letter.position.x <= TrashCan || _letter.position.x >= BackPack) {         
                                                                                                             //очистка письма
-            letter.position = new Vector2(startPos.x, startPos.y);
-            letter.rotation = Quaternion.Euler(0.0f, 0.0f, Random.Range(-1 * max_angle, max_angle));
+            _letter.position = new Vector2(_startPos.x, _startPos.y);
+            _letter.rotation = Quaternion.Euler(0.0f, 0.0f, Random.Range(-1 * MaxAngle, MaxAngle));
 
-            processedLettersCount++;                                                                        // зачёт письма
+            _processedLettersCount++;                                                                        // зачёт письма
 
-            if (isTrash)
+            if (_isTrash)
             {
-                db.SetUserData(processedLettersCount, false, Stamps.EMPTY);
+                _dataBase.SetUserData(_processedLettersCount, false, Stamps.EMPTY);
             }
-            else if (isExamined) {
+            else if (_isExamined) {
 
-                db.SetUserData(processedLettersCount, true, label.GetCurrentLabel());      
+                _dataBase.SetUserData(_processedLettersCount, true, _label.GetCurrentLabel());      
             }
 
-            isReceived = false;
-            isTrash = false;
-            isExamined = false;
-            isRestart = false;
-            isWrited = false;
+            _isReceived = false;
+            _isTrash = false;
+            _isExamined = false;
+            _isResumed = false;
+            _isWrited = false;
 
-            label.ClearLabel();
+            _label.ClearLabel();
         }
-        else if (!isReceived) {
+        else if (!_isReceived) {
 
-            if (!isWrited) {
+            if (!_isWrited) {
 
                 int addresIndex = 0;
 
-                RightText.text = db.GetRightRandomAddress(ref addresIndex);                  
-                RightTextIndex.text = db.AdaptIndex(addresIndex);
+                _rightText.text = _dataBase.GetRightRandomAddress(ref addresIndex);                  
+                _rightTextIndex.text = _dataBase.AdaptIndex(addresIndex);
 
-                LeftText.text = db.GetLeftRandomAddress();
+                _leftText.text = _dataBase.GetLeftRandomAddress();
 
-                RightText.font = RightTextIndex.font = LeftText.font = db.GetRandomFont();
+                _rightText.font = _rightTextIndex.font = _leftText.font = _dataBase.GetRandomFont();
 
-                isWrited = true;
+                _isWrited = true;
             }
         
-            letter.position = Vector2.MoveTowards(letter.position, deskPos, speed * Time.deltaTime);
+            _letter.position = Vector2.MoveTowards(_letter.position, _deskPos, _speed * Time.deltaTime);
 
-            if (letter.position.Equals(deskPos)) {
+            if (_letter.position.Equals(_deskPos)) {
 
-                isReceived = true;
+                _isReceived = true;
             }
         }
-        else if (isTrash)
+        else if (_isTrash)
         {
-            letter.position = Vector2.MoveTowards(letter.position, new Vector2(trash_can, letter.position.y), speed * Time.deltaTime);           
+            _letter.position = Vector2.MoveTowards(_letter.position, new Vector2(TrashCan, _letter.position.y), _speed * Time.deltaTime);           
         }
-        else if (isExamined)
+        else if (_isExamined)
         {
-            letter.position = Vector2.MoveTowards(letter.position, new Vector2(back_pack, letter.position.y), speed * Time.deltaTime);        
+            _letter.position = Vector2.MoveTowards(_letter.position, new Vector2(BackPack, _letter.position.y), _speed * Time.deltaTime);        
         }
-        else if (isRestart) {
+        else if (_isResumed) {
 
-            letter.position = Vector2.MoveTowards(letter.position, new Vector2(deskPos.x, deskPos.y), speed * Time.deltaTime);
+            _letter.position = Vector2.MoveTowards(_letter.position, new Vector2(_deskPos.x, _deskPos.y), _speed * Time.deltaTime);
         }
         
     }

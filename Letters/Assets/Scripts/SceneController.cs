@@ -2,95 +2,91 @@
 
 public class SceneController : MonoBehaviour
 {
-    [SerializeField] private RectTransform resumeButton;
-    [SerializeField] private RectTransform exitButton;
-    [SerializeField] private RectTransform errorImage;
-    [SerializeField] private RectTransform restartButton;
-    [SerializeField] private RectTransform gameEndButton;
+    [SerializeField] private RectTransform _resumeButton = null;
+    [SerializeField] private RectTransform _exitButton = null;
+    [SerializeField] private RectTransform _errorImage = null;
+    [SerializeField] private RectTransform _restartButton = null;
+    [SerializeField] private RectTransform _gameEndButton = null;
 
-    [SerializeField] private float buttonsSpeed = 1000.0f;       // скорость движения кнопок
-    [SerializeField] private float imageSpeed = 2000.0f;         // скорость движение окна ошибок
-    [SerializeField] private Results paper;
+    [SerializeField] private float _buttonsSpeed = 1000.0f;       // скорость движения кнопок
+    [SerializeField] private float _imageSpeed = 2000.0f;         // скорость движение окна ошибок
+    [SerializeField] private ResultPaper _paper = null;
+       
+    [SerializeField] private StampController[] _stamps = null;
+    [SerializeField] private LetterController _letter = null;
+    [SerializeField] private TextMesh _timeOutput = null;
+    [SerializeField] private float _leftTime = 10;                          // время в секундах    
+    [SerializeField] private DataBases _dataBase = null;
 
-    private const float resumeButton_y_max = 660.0f;             // максимальные и минимальные координаты кнопок Продолжить и Выход
-    private const float resumeButton_y_min = 40.0f;
-    private const float exitButton_y_max = -180.0f;
-    private const float exitButton_y_min = -800.0f;
+    private static DifficultyLevel _level = DifficultyLevel.EASY;
+    private bool _pause = default;
+    private float _gameTime = default;
 
-    private const float restartButton_x_max = -600.0f;           // максимальные и минимальные координаты кнопок Играть снова и Выйти
-    private const float restartButton_x_min = -1300.0f;
-    private const float gameEndButton_x_max = 1300.0f;
-    private const float gameEndButton_x_min = 600.0f;
+    public Stamps CurrentStamp { get; set; } = default;
+    public bool EndOfGame { get; private set; } = default;
+    public static bool Error { get; set; } = false;
 
-
-    public Stamps currentStamp;
-    [SerializeField] private StampController[] stamps = null;
-    [SerializeField] private LetterController letter = null;
-
-    [SerializeField] private TextMesh output;
-    [SerializeField] private float leftTime = 10;                          // время в секундах
-    private float gameTime;
-    private DataBases db = null;
-
-    private static DifficultyLevel level = DifficultyLevel.EASY;
-    private bool pause;
-    public bool endOfGame { get; private set; }
-    public static bool error = false;
+    private const float ResumeButtonYMax = 660.0f;             // максимальные и минимальные координаты кнопок Продолжить и Выход
+    private const float ResumeButtonYMin = 40.0f;
+    private const float ExitButtonYMax = -180.0f;
+    private const float ExitButtonYMin = -800.0f;
+    private const float RestartButtonXMax = -600.0f;           // максимальные и минимальные координаты кнопок Играть снова и Выйти
+    private const float GameEndButtonXMin = 600.0f;
 
     public static void SetDifficultyLevel(DifficultyLevel newlevel)
     {
-        level = newlevel;
+        _level = newlevel;
     }
 
     public static DifficultyLevel GetDifficultyLevel()
     {
-        return level;
+        return _level;
     }
 
     public void GamePause()
     {
-        for (short i = 0; i < stamps.Length; i++)
+        for (int i = 0; i < _stamps.Length; i++)
         {
-            stamps[i].StopGame();
+            _stamps[i].StopGame();
         }
 
-        letter.StopGame();
-        pause = true;
+        _letter.StopGame();
+        _pause = true;
     }
 
     public void GameContinue()
     {
-        for (short i = 0; i < stamps.Length; i++)
+        for (int i = 0; i < _stamps.Length; i++)
         {
-            stamps[i].StartGame();
+            _stamps[i].StartGame();
         }
 
-        letter.StartGame();
-        pause = false;
+        _letter.StartGame();
+        _pause = false;
     }
 
     public void GameEnd() {
 
-        paper.SetMoving(true);
-        paper.SetData();
+        _paper.SetMoving(true);
+        _paper.SetData();
 
-        for (short i = 0; i < stamps.Length; i++)
+        for (int i = 0; i < _stamps.Length; i++)
         {
-            stamps[i].StopGame();
+            _stamps[i].StopGame();
         }
 
-        letter.StopGame();
-        endOfGame = true;
+        _letter.StopGame();
+        EndOfGame = true;
     }
 
     public void GameError()
     {
-        for (short i = 0; i < stamps.Length; i++)
+        for (int i = 0; i < _stamps.Length; i++)
         {
-            stamps[i].StopGame();
+            _stamps[i].StopGame();
         }
 
-        letter.StopGame();
+        _letter.StopGame();
     }
 
     public void Fail()
@@ -101,51 +97,51 @@ public class SceneController : MonoBehaviour
     public void Restart()
     {
         Stats.Clear();
-        Application.LoadLevel("SampleScene");
+        Application.LoadLevel(1);
     }
 
     public void Exit()
     {
         Stats.Clear();
-        StartSceneManager.isUpdated = false;
-        Application.LoadLevel("StartScene");
+        StartSceneManager.IsUpdated = false;
+        Application.LoadLevel(0);
     }
 
     public void SetGameParams()
     {
-        if (level == DifficultyLevel.EASY)                  // уровень сложности
+        if (_level == DifficultyLevel.EASY)                  // уровень сложности
         {
-            leftTime = 120.0f;                              // время сессии
-            DataBases.SetLettersCount(10);                  // кол-во писем за сессию
+            _leftTime = 120.0f;                              // время сессии
+            DataBases.LettersCount = 10;                  // кол-во писем за сессию
         }
-        else if (level == DifficultyLevel.MIDDLE)
+        else if (_level == DifficultyLevel.MIDDLE)
         {
-            leftTime = 100.0f;
-            DataBases.SetLettersCount(10);
+            _leftTime = 100.0f;
+            DataBases.LettersCount = 10;
         }
         else
         {
-            leftTime = 30.0f;
-            DataBases.SetLettersCount(10);
+            _leftTime = 30.0f;
+            DataBases.LettersCount = 10;
         }
     }
 
     public void SetStamp(Stamps newStamp) {
 
-        currentStamp = newStamp;
+        CurrentStamp = newStamp;
 
-        for (int i = 0; i < stamps.Length; i++) {
+        for (int i = 0; i < _stamps.Length; i++) {
 
-            if (stamps[i].isVisible == false && (Stamps)stamps[i].stamp_number != currentStamp)
+            if (_stamps[i].IsVisible == false && (Stamps)_stamps[i].number != CurrentStamp)
             {
-                stamps[i].SetVisible(true);
+                _stamps[i].IsVisible = true;
             }
         }
     }
 
     public void CloseStamps() {
 
-        currentStamp = Stamps.EMPTY;
+        CurrentStamp = Stamps.EMPTY;
     }
 
     public string ViewTime(float time)
@@ -161,14 +157,12 @@ public class SceneController : MonoBehaviour
         return string.Format("{0:D2}:{1:D2}", (int)minutes, (int)seconds);
     }
 
-
     private void Start()
     {
         SetGameParams();
-        db = GetComponent<DataBases>();
-        endOfGame = false;
-        pause = false;
-        gameTime = 0;      
+        EndOfGame = false;
+        _pause = false;
+        _gameTime = 0;      
     }
 
     private void OnMouseUp()
@@ -179,45 +173,45 @@ public class SceneController : MonoBehaviour
 
     private void Update()
     {
-        if (endOfGame)
+        if (EndOfGame)
         {
-            restartButton.anchoredPosition = Vector2.MoveTowards(restartButton.anchoredPosition, new Vector2(restartButton_x_max, 0.0f), buttonsSpeed * Time.deltaTime);
-            gameEndButton.anchoredPosition = Vector2.MoveTowards(gameEndButton.anchoredPosition, new Vector2(gameEndButton_x_min, 0.0f), buttonsSpeed * Time.deltaTime);
+            _restartButton.anchoredPosition = Vector2.MoveTowards(_restartButton.anchoredPosition, new Vector2(RestartButtonXMax, 0.0f), _buttonsSpeed * Time.deltaTime);
+            _gameEndButton.anchoredPosition = Vector2.MoveTowards(_gameEndButton.anchoredPosition, new Vector2(GameEndButtonXMin, 0.0f), _buttonsSpeed * Time.deltaTime);
             return;
         }
 
-        if (error)
+        if (Error)
         {
             GameError();
-            errorImage.anchoredPosition = Vector2.MoveTowards(errorImage.anchoredPosition, new Vector2(0.0f, 0.0f), imageSpeed * Time.deltaTime);
+            _errorImage.anchoredPosition = Vector2.MoveTowards(_errorImage.anchoredPosition, new Vector2(0.0f, 0.0f), _imageSpeed * Time.deltaTime);
             return;
         }
 
-        if (pause) {
+        if (_pause) {
 
-            resumeButton.anchoredPosition = Vector2.MoveTowards(resumeButton.anchoredPosition, new Vector2(0.0f, resumeButton_y_min), buttonsSpeed * Time.deltaTime);
-            exitButton.anchoredPosition = Vector2.MoveTowards(exitButton.anchoredPosition, new Vector2(0.0f, exitButton_y_max), buttonsSpeed * Time.deltaTime);
+            _resumeButton.anchoredPosition = Vector2.MoveTowards(_resumeButton.anchoredPosition, new Vector2(0.0f, ResumeButtonYMin), _buttonsSpeed * Time.deltaTime);
+            _exitButton.anchoredPosition = Vector2.MoveTowards(_exitButton.anchoredPosition, new Vector2(0.0f, ExitButtonYMax), _buttonsSpeed * Time.deltaTime);
             return;
         }
 
-        resumeButton.anchoredPosition = Vector2.MoveTowards(resumeButton.anchoredPosition, new Vector2(0.0f, resumeButton_y_max), buttonsSpeed * Time.deltaTime);
-        exitButton.anchoredPosition = Vector2.MoveTowards(exitButton.anchoredPosition, new Vector2(0.0f, exitButton_y_min), buttonsSpeed * Time.deltaTime);
+        _resumeButton.anchoredPosition = Vector2.MoveTowards(_resumeButton.anchoredPosition, new Vector2(0.0f, ResumeButtonYMax), _buttonsSpeed * Time.deltaTime);
+        _exitButton.anchoredPosition = Vector2.MoveTowards(_exitButton.anchoredPosition, new Vector2(0.0f, ExitButtonYMin), _buttonsSpeed * Time.deltaTime);
 
-        if (leftTime < 0) {
+        if (_leftTime < 0) {
                                                                                         // время вышло
-            db.RemoveLastLetter();
-            db.Summarizing();                   
+            _dataBase.RemoveLastLetter();
+            _dataBase.Summarizing();                   
             GameEnd();                                                         
             return;
         }
 
-        output.text = ViewTime(leftTime);
-        gameTime += Time.deltaTime;
+        _timeOutput.text = ViewTime(_leftTime);
+        _gameTime += Time.deltaTime;
 
-        if (gameTime >= 1)
+        if (_gameTime >= 1)
         {
-            leftTime--;
-            gameTime = 0;
+            _leftTime--;
+            _gameTime = 0;
         }
 
     }

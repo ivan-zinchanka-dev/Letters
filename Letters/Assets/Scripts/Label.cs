@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class Label : MonoBehaviour
 {
-    [SerializeField] private Sprite[] sprites;
-    private SpriteRenderer rend;
-    private Stamps currentLabel;
+    [SerializeField] private Sprite[] _sprites = null;
+    [SerializeField] private SpriteRenderer _render = null;
+    private Stamps currentLabel = default;
 
     private void Start()
     {
         currentLabel = Stamps.EMPTY;
-        rend = GetComponent<SpriteRenderer>();
+        if(_render == null) _render = GetComponent<SpriteRenderer>();
     }
 
     public Stamps GetCurrentLabel() {
@@ -26,7 +27,7 @@ public class Label : MonoBehaviour
 
         currentLabel = label;
 
-        rend.sprite = sprites[(int)label];
+        _render.sprite = _sprites[(int)label];
         transform.position = new Vector2(position.x, position.y);
         Debug.Log(position.x + "  " + position.y);
     }
@@ -34,7 +35,7 @@ public class Label : MonoBehaviour
     public void ClearLabel()
     {
         currentLabel = Stamps.EMPTY;
-        rend.sprite = null;
+        _render.sprite = null;
     }
 
 }

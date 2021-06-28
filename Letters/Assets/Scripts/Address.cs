@@ -1,21 +1,21 @@
 ﻿
 public struct Address {
 
-    private string name;
-    private string location;
-    private short house;
-    private string elaboration;
-    private int index;
-    private string city;
+    private string _name;
+    private string _location;
+    private short _house;
+    private string _elaboration;
+    private int _index;
+    private string _city;
 
     public Address(string name, string location, short house, string elaboration, int index, string city) {
 
-        this.name = name.Trim(); 
-        this.location = location.Trim();
-        this.house = house;
-        this.elaboration = elaboration.Trim();
-        this.index = index;
-        this.city = city.Trim();
+        this._name = name.Trim(); 
+        this._location = location.Trim();
+        this._house = house;
+        this._elaboration = elaboration.Trim();
+        this._index = index;
+        this._city = city.Trim();
         this.Correction();
     }
 
@@ -23,17 +23,17 @@ public struct Address {
 
         short i, k = 0;
 
-        if (name.Length > 20)
+        if (_name.Length > 20)
         {
-            for (i = 0; i < name.Length; i++)
+            for (i = 0; i < _name.Length; i++)
             {
-                if (name[i] == ' ')
+                if (_name[i] == ' ')
                 {
                     k++;
 
                     if (k == 2)
                     {
-                        name = name.Insert(i, "\n");
+                        _name = _name.Insert(i, "\n");
                         break;
                     }
                 }
@@ -41,53 +41,53 @@ public struct Address {
         }
         else
         {
-            name += '\n';
+            _name += '\n';
         }        
 
     }
 
     public int GetIndex() {
 
-        return index;
+        return _index;
     }
 
     public string GetCity()
     {
-        return city;
+        return _city;
     }
 
     public string ToLeftView()
     {
-        string result = name;
+        string result = _name;
 
-        if (location.Equals(""))
+        if (_location.Equals(""))
         {
             result += "\n\n";
         }
         else {
 
-            result += "\nул. " + location + '\n';
+            result += "\nул. " + _location + '\n';
         }
 
-        if (house != 0) {
+        if (_house != 0) {
 
-            result += "д. " + house + "   ";
+            result += "д. " + _house + "   ";
         }
 
-        result += elaboration + "\n";
+        result += _elaboration + "\n";
 
-        if (index != 0)
+        if (_index != 0)
         {
-            result += index + "        ";
+            result += _index + "        ";
         }
         else {
 
             result += "           ";
         }
 
-        if (!city.Equals(""))
+        if (!_city.Equals(""))
         {
-            result += "г. " + city + '\n';
+            result += "г. " + _city + '\n';
         }
 
         return result;
@@ -96,27 +96,27 @@ public struct Address {
 
     public string ToRightView()
     {
-        string result = name;
+        string result = _name;
 
-        if (location.Equals(""))
+        if (_location.Equals(""))
         {
             result += "\n\n";
         }
         else
         {
-            result += "\nул. " + location + '\n';
+            result += "\nул. " + _location + '\n';
         }
 
-        if (house != 0)
+        if (_house != 0)
         {
-            result += "д. " + house + "   ";
+            result += "д. " + _house + "   ";
         }
 
-        result += elaboration + "\n";        
+        result += _elaboration + "\n";        
 
-        if (!city.Equals(""))
+        if (!_city.Equals(""))
         {
-            result += "               г. " + city + '\n';
+            result += "               г. " + _city + '\n';
         }
 
         return result;
@@ -124,7 +124,7 @@ public struct Address {
 
     public override string ToString()
     {         
-        return name + "\nул. " + location + "\nд. " + house + "  " + elaboration + "\n               г. " + city + "\n";         
+        return _name + "\nул. " + _location + "\nд. " + _house + "  " + _elaboration + "\n               г. " + _city + "\n";         
     }
 
 }
