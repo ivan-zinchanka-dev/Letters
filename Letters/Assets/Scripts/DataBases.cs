@@ -46,7 +46,7 @@ public class DataBases : MonoBehaviour
     public string GetLeftRandomAddress() {
 
         short choiseAddress;                                                // выбор адреса отпраителя
-        byte choiseList = (byte)Random.Range(0, 2);                         // из какой БД выбираем (0 - некорректная, 1 - корректная)
+        byte choiseList = (byte)Random.Range(0, 3);                         // из какой БД выбираем (0 - некорректная, 1 - корректная)
 
         if (choiseList == 0)
         {
@@ -58,7 +58,6 @@ public class DataBases : MonoBehaviour
             choiseAddress = (short)Random.Range(0, _correctList.Length);     // выбор письма по индексу
             return _correctList[choiseAddress].ToLeftView();
         }
-
     }
 
 
@@ -101,17 +100,6 @@ public class DataBases : MonoBehaviour
         Debug.Log("№ of letter: " + letterNumber + " Data: " + userMark + " " + userStamp);
         _letters[letterNumber - 1].InitSubjectiveData(userMark, userStamp);
     }
-
-    //public static short GetLettersCount()
-    //{
-    //    return _lettersCount;
-    //}
-
-    //public static void SetLettersCount(short count)
-    //{
-    //    _lettersCount = count;
-    //}
-
     private void Start()
     {
         try
