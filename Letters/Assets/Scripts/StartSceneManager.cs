@@ -14,7 +14,7 @@ public class StartSceneManager : MonoBehaviour
     [SerializeField] private DiscJockey _discJockey = null;
 
     private bool isStartMenu = true;
-    public static bool IsUpdated { get; set; } = true;
+    public static bool IsUpdated { get; set; } = false;
 
     private const float StartButtonYMax = 660.0f;                 //  максимальные и минимальные координаты кнопок Играть и Настройки
     private const float StartButtonYMin = 40.0f;
@@ -37,7 +37,7 @@ public class StartSceneManager : MonoBehaviour
     private void SetDifficultyLevel()
     {
         _difficultySlider.value = (float) SceneController.GetDifficultyLevel();
-        Debug.Log("SET LVL: " + SceneController.GetDifficultyLevel());
+        Debug.Log("SET LVL: " + _difficultySlider.value);
     }
 
     private void SetVolume() {
@@ -49,6 +49,12 @@ public class StartSceneManager : MonoBehaviour
     public void SetStartMenu(bool value)
     {
         isStartMenu = value;
+    }
+
+    private void Start()
+    {
+        SceneController.InitDifficultyLevel();
+        
     }
 
     private void Update()

@@ -33,13 +33,28 @@ public class SceneController : MonoBehaviour
     private const float RestartButtonXMax = -600.0f;           // максимальные и минимальные координаты кнопок Играть снова и Выйти
     private const float GameEndButtonXMin = 600.0f;
 
+    private const string DifficultyLevelKey = "Difficulty_level";
+
+    public static void InitDifficultyLevel() {
+
+        _level = (DifficultyLevel)PlayerPrefs.GetInt(DifficultyLevelKey, (int)DifficultyLevel.EASY);
+
+        Debug.Log("INIT");
+        
+    }
+
     public static void SetDifficultyLevel(DifficultyLevel newlevel)
     {
         _level = newlevel;
+        PlayerPrefs.SetInt(DifficultyLevelKey, (int)_level);
+        PlayerPrefs.Save();
+        Debug.Log("WRITE");
     }
 
     public static DifficultyLevel GetDifficultyLevel()
     {
+        //_level = (DifficultyLevel) PlayerPrefs.GetInt(DifficultyLevelKey, (int)DifficultyLevel.EASY);
+        Debug.Log("READ");
         return _level;
     }
 

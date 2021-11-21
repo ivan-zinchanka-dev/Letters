@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Stamps
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 21300000, guid: 3a4eb241ad1934344b9c362094711647, type: 3}
+    - {fileID: 21300000, guid: e0d06d7b768e8404bab28dd74f109921, type: 3}
+    - {fileID: 21300000, guid: 9b3423c7259b08f45bea22b0bf7b7040, type: 3}
+    - {fileID: 21300000, guid: 54ef00d0891a7fc48a2d02daec86f18b, type: 3}
+    - {fileID: 21300000, guid: 505e4903d6eb89f42a933a08456a6fb2, type: 3}
+    - {fileID: 21300000, guid: c19cac79e075f204eade10ccdbd369e2, type: 3}
+    - {fileID: 21300000, guid: 0acc66e465cf9cc4a93ec94f21612033, type: 3}
+    - {fileID: 21300000, guid: a16cb68c3775ccc49baacdcaed86f850, type: 3}
+    - {fileID: 21300000, guid: fcead44a63267554c8c528876c436e92, type: 3}
+    - {fileID: 21300000, guid: ae8eeda1ee76a3f4e9ab69b830736426, type: 3}
+    - {fileID: 21300000, guid: a641a6f8a73c6a142912615e782ca009, type: 3}
+    - {fileID: 21300000, guid: d55b993f46d585a4780a80e904946973, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 54ef00d0891a7fc48a2d02daec86f18b, type: 3}
+  - {fileID: 21300000, guid: 3a4eb241ad1934344b9c362094711647, type: 3}
+  - {fileID: 21300000, guid: ae8eeda1ee76a3f4e9ab69b830736426, type: 3}
+  - {fileID: 21300000, guid: 505e4903d6eb89f42a933a08456a6fb2, type: 3}
+  - {fileID: 21300000, guid: 0acc66e465cf9cc4a93ec94f21612033, type: 3}
+  - {fileID: 21300000, guid: 9b3423c7259b08f45bea22b0bf7b7040, type: 3}
+  - {fileID: 21300000, guid: a641a6f8a73c6a142912615e782ca009, type: 3}
+  - {fileID: 21300000, guid: c19cac79e075f204eade10ccdbd369e2, type: 3}
+  - {fileID: 21300000, guid: fcead44a63267554c8c528876c436e92, type: 3}
+  - {fileID: 21300000, guid: e0d06d7b768e8404bab28dd74f109921, type: 3}
+  - {fileID: 21300000, guid: a16cb68c3775ccc49baacdcaed86f850, type: 3}
+  - {fileID: 21300000, guid: d55b993f46d585a4780a80e904946973, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Brown_1
+  - Blue_0
+  - Red_1
+  - Green_0
+  - Purple_0
+  - Brown
+  - Swampy
+  - Green_1
+  - Red_0
+  - Blue_1
+  - Purple_1
+  - Swampy_1
+  m_Tag: Stamps
+  m_IsVariant: 0
